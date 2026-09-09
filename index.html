@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idul — Web Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #10161d;
+    --bg-elev: #161d26;
+    --text: #e9e4d8;
+    --text-dim: #93a0ab;
+    --accent: #c9a366;
+    --accent-soft: #7f93a8;
+    --line: rgba(233,228,216,0.13);
+    --line-strong: rgba(233,228,216,0.24);
+    --serif: "Fraunces", serif;
+    --sans: "Inter", sans-serif;
+    --mono: "JetBrains Mono", monospace;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection{ background: var(--accent); color: #10161d; }
+
+  a{ color: inherit; }
+
+  .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(16,22,29,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 20px 32px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .nav-mark{
+    font-family: var(--serif);
+    font-size: 20px;
+    letter-spacing: 0.02em;
+  }
+  .nav-mark span{ color: var(--accent); }
+  .nav-links{
+    display:flex;
+    gap: 28px;
+    list-style:none;
+    margin:0; padding:0;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .nav-links a{ text-decoration:none; transition: color .25s; }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-links a:focus-visible{ outline: 1px solid var(--accent); outline-offset: 4px; }
+  .nav-toggle{ display:none; }
+
+  @media (max-width: 720px){
+    .nav-links{
+      position: fixed;
+      inset: 68px 0 auto 0;
+      background: var(--bg-elev);
+      flex-direction: column;
+      padding: 20px 32px 28px;
+      gap: 18px;
+      border-bottom: 1px solid var(--line);
+      transform: translateY(-8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    .nav-links.open{
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .nav-toggle{
+      display:block;
+      background:none;
+      border: 1px solid var(--line-strong);
+      color: var(--text);
+      width: 38px; height: 34px;
+      border-radius: 6px;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding: 96px 0 88px;
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: end;
+  }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent-soft);
+    margin: 0 0 18px;
+  }
+  .hero h1{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 68px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    margin: 0 0 22px;
+  }
+  .hero-lede{
+    max-width: 46ch;
+    color: var(--text-dim);
+    font-size: 17px;
+  }
+  .hero-cta{
+    margin-top: 34px;
+    display:flex;
+    gap: 16px;
+    align-items:center;
+    flex-wrap: wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding: 13px 22px;
+    border-radius: 3px;
+    text-decoration:none;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: background .25s, border-color .25s, color .25s, transform .2s;
+  }
+  .btn-primary{
+    background: var(--accent);
+    color: #191008;
+  }
+  .btn-primary:hover{ transform: translateY(-1px); background:#d6b077; }
+  .btn-ghost{
+    border-color: var(--line-strong);
+    color: var(--text);
+  }
+  .btn-ghost:hover{ border-color: var(--accent-soft); color: var(--accent-soft); }
+
+  /* terminal card */
+  .term{
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  .term-bar{
+    display:flex;
+    gap:7px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .term-bar i{
+    width:10px; height:10px; border-radius:50%;
+    background: var(--line-strong);
+    display:inline-block;
+  }
+  .term-body{
+    padding: 20px 20px 24px;
+    color: var(--text-dim);
+    min-height: 168px;
+  }
+  .term-body .k{ color: var(--accent-soft); }
+  .term-body .s{ color: var(--accent); }
+  .term-body .c{ color: #5f6b74; }
+  .caret{
+    display:inline-block;
+    width: 7px; height: 15px;
+    background: var(--accent);
+    vertical-align: -2px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  @media (max-width: 860px){
+    .hero{ grid-template-columns: 1fr; }
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 84px 0; border-top: 1px solid var(--line); }
+  .sec-head{
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 44px;
+    flex-wrap: wrap;
+  }
+  .sec-head h2{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(26px, 3vw, 34px);
+    margin: 0;
+  }
+  .sec-num{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 64px;
+  }
+  .about-body p{ color: var(--text-dim); max-width: 58ch; }
+  .about-body p + p{ margin-top: 16px; }
+  .stat-row{
+    display:flex;
+    flex-direction: column;
+    gap: 22px;
+    border-left: 1px solid var(--line);
+    padding-left: 28px;
+  }
+  .stat{ }
+  .stat b{
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--accent);
+    display:block;
+  }
+  .stat span{ font-size: 13px; color: var(--text-dim); }
+
+  @media (max-width: 720px){
+    .about-grid{ grid-template-columns: 1fr; }
+    .stat-row{ flex-direction: row; flex-wrap: wrap; border-left:none; border-top:1px solid var(--line); padding-left:0; padding-top:24px; }
+    .stat{ min-width: 140px; }
+  }
+
+  /* ---------- Stack ---------- */
+  .stack-groups{ display:grid; grid-template-columns: repeat(3,1fr); gap: 36px; }
+  .stack-group h3{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin: 0 0 16px;
+  }
+  .tag-row{ display:flex; flex-wrap:wrap; gap: 10px; }
+  .tag{
+    font-size: 13.5px;
+    padding: 7px 13px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    color: var(--text);
+  }
+  @media (max-width: 780px){ .stack-groups{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px){ .stack-groups{ grid-template-columns: 1fr; } }
+
+  /* ---------- Work list ---------- */
+  .work-row{
+    display:grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 28px;
+    align-items: center;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    text-decoration:none;
+    color: var(--text);
+    position: relative;
+  }
+  .work-row:first-of-type{ border-top: none; }
+  .work-year{ font-family: var(--mono); font-size: 13px; color: var(--text-dim); }
+  .work-title{
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    transition: color .25s;
+  }
+  .work-desc{ color: var(--text-dim); font-size: 14.5px; max-width: 56ch; }
+  .work-tags{ font-family: var(--mono); font-size: 12px; color: var(--accent-soft); margin-top:8px; }
+  .work-arrow{
+    font-family: var(--mono);
+    font-size: 20px;
+    color: var(--text-dim);
+    transition: transform .25s, color .25s;
+  }
+  .work-row:hover .work-title{ color: var(--accent); }
+  .work-row:hover .work-arrow{ transform: translate(4px,-4px); color: var(--accent); }
+  .work-row:focus-visible{ outline: 1px solid var(--accent); outline-offset: 6px; }
+
+  @media (max-width: 640px){
+    .work-row{ grid-template-columns: 1fr auto; }
+    .work-year{ grid-row: 1; grid-column: 1 / -1; }
+  }
+
+  /* ---------- Contact ---------- */
+  .contact{ text-align: left; }
+  .contact h2{
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(32px, 5vw, 52px);
+    max-width: 16ch;
+    margin: 0 0 28px;
+  }
+  .contact-links{
+    display:flex; flex-wrap:wrap; gap: 30px;
+    margin-top: 36px;
+    font-family: var(--mono);
+    font-size: 14px;
+  }
+  .contact-links a{ text-decoration:none; color: var(--text-dim); border-bottom: 1px solid transparent; padding-bottom: 2px; transition: color .2s, border-color .2s; }
+  .contact-links a:hover{ color: var(--accent); border-color: var(--accent); }
+
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 26px 0 40px;
+    font-size: 13px;
+    color: var(--text-dim);
+    display:flex;
+    justify-content: space-between;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    .caret{ animation: none; opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <div class="nav-mark">XIONE<span>.</span>dev</div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks">menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">Tentang</a></li>
+      <li><a href="#work">Proyek</a></li>
+      <li><a href="#contact">Kontak</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none; padding-top:96px;">
+    <div>
+      <p class="eyebrow">Desktop Application Developer, Electron & Typescript</p>
+      <h1>Pengalaman sebagai developer membangun antarmuka pengguna sistem operasi yang terasa native cepat lintas jenis platform, dan rapi.</h1>
+      <p class="hero-lede">Fokus pada pengembangan aplikasi desktop lintas platform dengan Electron dan TypeScript — dari arsitektur proses utama/renderer sampai antarmuka yang terasa seperti bagian asli dari sistem operasi, bukan hanya sekedar jendela browser peramban website</p>
+      <div class="hero-cta">
+        <a href="#work" class="btn btn-primary">Lihat proyek</a>
+        <a href="#contact" class="btn btn-ghost">Hubungi saya</a>
+      </div>
+    </div>
+    <div class="term">
+      <div class="term-bar"><i></i><i></i><i></i></div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="sec-head">
+      <h2>Tentang</h2>
+      <span class="sec-num">01</span>
+    </div>
+    <div class="about-grid">
+      <div class="about-body">
+        <p>Saya Muhammad Idul, membangun antarmuka pengguna sistem operasi menggunakan Electron dan TypeScript. Pekerjaan saya mempertemukan dua dunia — kekuatan web (HTML, CSS, JavaScript) dengan akses tingkat sistem yang biasanya hanya dimiliki aplikasi native, sehingga hasil akhirnya terasa menyatu dengan OS, bukan seperti tab browser yang dibungkus jendela.</p>
+        <p>Saya terbiasa bekerja dengan arsitektur multi-proses Electron (main &amp; renderer, thread process), komunikasi antar-proses (IPC), serta TypeScript untuk menjaga kode tetap aman dan dari segala jenis serangan siber dan mudah dikembangkan seiring aplikasi tumbuh lebih kompleks.</p>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b></b><span>Tahun Pengalaman Saya Sebagai Desktop Application Developer: 2024 - 2026</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="sec-head">
+      <h2>Keahlian</h2>
+      <span class="sec-num">02</span>
+    </div>
+    <div class="stack-groups">
+      <div class="stack-group">
+        <h3>Front-end</h3>
+        <div class="tag-row">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">React</span>
+          <span class="tag">Electron Desktop Application</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <h3>Back-end</h3>
+        <div class="tag-row">
+          <span class="tag">Node.js</span>
+          <span class="tag">Python Library</span>
+        </div>
+      </div>
+      <div class="stack-group">
+        <h3>Tools</h3>
+        <div class="tag-row">
+          <span class="tag">Git</span>
+          <span class="tag">Oracle Virtual Box</span>
+          <span class="tag">NASM</span>
+          <span class="tag">Webpack</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="sec-head">
+      <h2>Proyek Yang Telah Berhasil Di Selesaikan</h2>
+      <span class="sec-num">03</span>
+    </div>
+
+    <a href="#" class="work-row">
+      <span class="work-year">2025</span>
+      <div>
+        <h3 class="work-title">Nama Proyek Ke Satu</h3>
+        <p class="work-desc">~ Shell GUI Sistem Operasi Lintas Jenis Platform</p>
+        <p class="work-tags">React · Framework Electron · IPC .Python</p>
+      </div>
+      <span class="work-arrow">↗</span>
+    </a> 
+
+    <a href="#" class="work-row">
+      <span class="work-year">2026</span>
+      <div>
+        <h3 class="work-title">Nama Proyek Ke Dua</h3>
+        <p class="work-desc">~ Kedua Controller PS4 Saling Komunikasi Menerima Perintah Secara Receive Mode Wireless</p>
+        <p class="work-tags">Python · Pygame · Crc32  .Windows</p>
+      </div>
+      <span class="work-arrow">↗</span>
+    </a>
+
+
+    <a href="#" class="work-row">
+      <span class="work-year">2024</span>
+      <div>
+        <h3 class="work-title">Nama Proyek Ke Tiga</h3>
+        <p class="work-desc">~ Pegasus Sypware</p>
+        <p class="work-tags">GCC · Assembly · Python</p>
+      </div>
+      <span class="work-arrow">↗</span>
+    </a>
+
+    
+    <a href="#" class="work-row">
+      <span class="work-year">2025</span>
+      <div>
+        <h3 class="work-title">Nama Proyek Ke Empat</h3>
+        <p class="work-desc">~ Automatic One Click Clean Partition</p>
+        <p class="work-tags">Python</p>
+      </div>
+      <span class="work-arrow">↗</span>
+    </a>
+
+
+
+
+
+
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="sec-head" style="margin-bottom:0;">
+      <span class="sec-num">04</span>
+    </div>
+    <h2>Punya proyek yang ingin dikerjakan bersama? Mari mengobrol dengan.</h2>
+    <a class="btn btn-primary">idulm2868@gmail.com</a>
+    <div class="contact-links">
+      <a href="https://idulm2868-sudo.github.io/README/">GitHub</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span>© <span id="year"></span></span>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // single orchestrated moment: terminal "typing" on load
+  const lines = [
+    { k: 'const', s: ' dev', c: ' = {' },
+    { s: '  role:', k: " 'Desktop App Development Framework Electron',", c: '' },
+    { s: '  focus:', k: " 'clean, fast interfaces',", c: '' },
+    { s: '  status:', k: " 'open to work'", c: '' },
+    { c: '};' }
+  ];
+
+  const term = document.getElementById('termBody');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function renderPlain(){
+    term.innerHTML = lines.map(l =>
+      `<div>${(l.k||'')}<span class="s">${l.s||''}</span><span class="c">${l.c||''}</span></div>`
+    ).join('');
+  }
+
+  if (reduceMotion) {
+    renderPlain();
+  } else {
+    let li = 0;
+    function typeLine(){
+      if (li >= lines.length){
+        term.innerHTML += '<span class="caret"></span>';
+        return;
+      }
+      const full = (lines[li].k||'') + (lines[li].s||'') + (lines[li].c||'');
+      const row = document.createElement('div');
+      term.appendChild(row);
+      let ci = 0;
+      const speed = 14;
+      (function typeChar(){
+        row.textContent = full.slice(0, ci);
+        ci++;
+        if (ci <= full.length){
+          setTimeout(typeChar, speed);
+        } else {
+          li++;
+          setTimeout(typeLine, 90);
+        }
+      })();
+    }
+    typeLine();
+  }
+</script>
+
+</body>
+</html>
